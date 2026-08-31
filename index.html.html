@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Scheda 30">
+<meta name="theme-color" content="#E3E7DF">
+<title>Scheda 30 giorni</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0E1F1C; --paper:#E3E7DF; --paper2:#D5DBCF; --line:#B9C2B6;
+  --forza:#1E4D3F; --cardio:#2F6079; --recupero:#6E8A78; --riposo:#A9B3A7; --ambra:#E9B44C;
+  --display:"Anton",Impact,sans-serif;
+  --body:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --tab:calc(64px + env(safe-area-inset-bottom));
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:16px;line-height:1.5;
+  padding-bottom:var(--tab);
+  overscroll-behavior-y:none;-webkit-font-smoothing:antialiased;
+}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;touch-action:manipulation}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+:focus-visible{outline:3px solid var(--ambra);outline-offset:2px}
+
+.top{
+  position:sticky;top:0;z-index:20;background:var(--paper);
+  padding:calc(10px + env(safe-area-inset-top)) 18px 10px;
+  border-bottom:2px solid var(--ink);
+  display:flex;align-items:baseline;gap:10px;
+}
+.top .brand{font-family:var(--display);text-transform:uppercase;font-size:20px}
+.top .meta{margin-left:auto;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;opacity:.6}
+.pad{padding:18px 18px 30px}
+.view{display:none}
+.view.on{display:block}
+
+.tabbar{
+  position:fixed;left:0;right:0;bottom:0;z-index:30;
+  background:var(--paper);border-top:2px solid var(--ink);
+  display:grid;grid-template-columns:repeat(3,1fr);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.tabbar button{
+  height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;opacity:.45;
+}
+.tabbar button .ic{font-family:var(--display);font-size:17px;line-height:1}
+.tabbar button.on{opacity:1}
+.tabbar button.on .ic{color:var(--forza)}
+
+.h2{font-family:var(--display);text-transform:uppercase;font-size:30px;line-height:.95;margin:0 0 4px}
+.sub{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;opacity:.6;margin:0 0 18px}
+
+.daynav{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.daynav button{width:44px;height:44px;border:2px solid var(--ink);display:grid;place-items:center;font-family:var(--mono);font-size:18px;font-weight:600}
+.daynav .lab{flex:1;text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.hero{border:2px solid var(--ink);overflow:hidden}
+.hero-top{padding:16px;display:flex;align-items:flex-start;gap:12px}
+.hero-top .n{font-family:var(--display);font-size:52px;line-height:.8}
+.hero-top .tt{font-family:var(--display);text-transform:uppercase;font-size:21px;line-height:1}
+.hero-top .du{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
+.t-forza .hero-top{background:var(--forza);color:var(--paper)}
+.t-cardio .hero-top{background:var(--cardio);color:var(--paper)}
+.t-recupero .hero-top{background:var(--recupero);color:var(--paper)}
+.t-riposo .hero-top{background:var(--riposo)}
+.t-bilancio .hero-top{background:var(--ambra)}
+.hero-body{padding:14px 16px 4px}
+.blk{margin-bottom:14px}
+.blk-h{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;opacity:.55;margin:0 0 6px}
+.ex{display:flex;gap:10px;align-items:baseline;padding:7px 0;border-bottom:1px dotted var(--line)}
+.ex:last-child{border-bottom:0}
+.exlink{flex:1;text-align:left;font-size:15.5px;border-bottom:2px solid var(--ambra);align-self:flex-start}
+.ex .qty{font-family:var(--mono);font-size:13.5px;font-weight:500;white-space:nowrap}
+.plain{margin:0;font-size:15px}
+.donebar{display:flex;align-items:center;gap:10px;border:2px solid var(--ink);border-top:0;padding:13px 16px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px}
+.donebar input{width:22px;height:22px;accent-color:var(--forza)}
+.go{
+  width:100%;border:2px solid var(--ink);background:var(--forza);color:var(--paper);
+  padding:19px;font-family:var(--display);text-transform:uppercase;font-size:22px;letter-spacing:.02em;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+}
+.go.ghost{background:transparent;color:var(--ink);opacity:.55}
+
+.legend{display:flex;flex-wrap:wrap;gap:10px 14px;margin-bottom:14px;font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase}
+.dot{display:inline-block;width:10px;height:10px;border:1.5px solid var(--ink);margin-right:5px;vertical-align:-1px}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.cell{border:2px solid var(--ink);aspect-ratio:1;background:var(--paper2);display:flex;flex-direction:column;
+  align-items:flex-start;justify-content:space-between;padding:6px;position:relative}
+.cell .n{font-size:15px;font-weight:600}
+.cell .k{font-family:var(--mono);font-size:8px;letter-spacing:.05em;text-transform:uppercase;opacity:.85;text-align:left;line-height:1.1}
+.cell.c-forza{background:var(--forza);color:var(--paper)}
+.cell.c-cardio{background:var(--cardio);color:var(--paper)}
+.cell.c-recupero{background:var(--recupero);color:var(--paper)}
+.cell.c-riposo{background:var(--riposo)}
+.cell.c-bilancio{background:var(--ambra)}
+.cell.today{box-shadow:inset 0 0 0 4px var(--ambra)}
+.cell.done::after{content:"✓";position:absolute;right:5px;bottom:2px;font-family:var(--mono);font-size:16px;font-weight:700}
+.cell.done .k{opacity:.4}
+.prog{font-family:var(--mono);font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;opacity:.7;margin:14px 0 0}
+.wknote{border-left:3px solid var(--ink);padding:2px 0 2px 12px;margin:22px 0 0}
+.wknote .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;opacity:.55}
+.wknote p{margin:3px 0 0;font-size:14.5px}
+
+.acard{border:2px solid var(--ink);margin-bottom:14px;overflow:hidden}
+.afig{background:var(--ambra);border-bottom:2px solid var(--ink);padding:6px 10px 0}
+.abody{padding:12px 14px 14px}
+.abody .fign{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;opacity:.55}
+.abody h3{font-family:var(--display);text-transform:uppercase;font-size:21px;margin:4px 0 8px;line-height:1}
+.abody ol{margin:0;padding-left:17px;font-size:15px}
+.abody ol li{margin-bottom:5px}
+.warn{margin:10px 0 0;padding:9px 11px;background:var(--paper2);border-left:3px solid var(--ink);font-size:13.5px}
+.warn b{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;display:block;opacity:.6;margin-bottom:2px}
+.testbox label{display:block;border:2px solid var(--ink);padding:12px 14px;margin-bottom:10px}
+.testbox .q{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;opacity:.7;display:block;margin-bottom:6px}
+.testbox input{width:100%;border:0;border-bottom:2px solid var(--ink);background:transparent;font-family:var(--display);font-size:32px;padding:0;color:var(--ink)}
+.testbox input:focus{outline:0;border-bottom-color:var(--ambra)}
+.nx .item{border-top:2px solid var(--ink);padding:10px 0 0;margin-bottom:16px}
+.nx .item .k{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;opacity:.6}
+.nx .item p{margin:5px 0 0;font-size:14.5px}
+
+.fig{width:100%;height:auto;display:block}
+.fig .st{fill:none;stroke:var(--ink);stroke-width:3.6;stroke-linecap:round;stroke-linejoin:round}
+.fig .thin2{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round}
+.fig .ground{stroke:var(--ink);stroke-width:2;opacity:.32}
+.fig .ghost{opacity:.3}
+.fig .arc{fill:none;stroke:var(--ink);stroke-width:2;stroke-dasharray:4 5;opacity:.75}
+.fig .lbl{font-family:var(--mono);font-size:13px;font-weight:600;fill:var(--ink)}
+
+.sheet{position:fixed;inset:0;z-index:60;display:none}
+.sheet.on{display:block}
+.sheet .scrim{position:absolute;inset:0;background:rgba(14,31,28,.5)}
+.sheet .panel{position:absolute;left:0;right:0;bottom:0;max-height:86vh;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  background:var(--paper);border-top:3px solid var(--ink);padding:0 0 calc(20px + env(safe-area-inset-bottom));
+  animation:up .22s ease}
+@keyframes up{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.sheet .grab{width:44px;height:4px;background:var(--ink);opacity:.4;border-radius:2px;margin:10px auto 6px}
+.sheet .close{text-align:right;padding:0 16px 8px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+
+.runner{position:fixed;inset:0;z-index:70;background:var(--paper);display:none;flex-direction:column;
+  padding-top:env(safe-area-inset-top)}
+.runner.on{display:flex}
+.r-top{display:flex;align-items:center;gap:12px;padding:10px 16px 8px}
+.r-top .x{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+.r-top .st{margin-left:auto;font-family:var(--mono);font-size:11px;letter-spacing:.1em;opacity:.65}
+.r-bar{height:6px;background:var(--paper2);border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+.r-bar i{display:block;height:100%;background:var(--forza);width:0;transition:width .3s ease}
+.r-main{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px}
+.r-main.r-rest{background:var(--paper2)}
+.r-kind{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;opacity:.6}
+.r-title{font-family:var(--display);text-transform:uppercase;font-size:clamp(30px,9vw,44px);line-height:.94;margin:4px 0}
+.r-sub{font-family:var(--mono);font-size:12.5px;letter-spacing:.05em;opacity:.75;margin:0 0 8px}
+.r-clock{font-family:var(--mono);font-weight:700;font-variant-numeric:tabular-nums;
+  font-size:clamp(70px,25vw,116px);line-height:.95;letter-spacing:-.03em;margin:6px 0}
+.r-clock.pulse{color:var(--forza)}
+.r-plate{background:var(--ambra);border:2px solid var(--ink);padding:8px 10px 2px;margin:4px 0 10px}
+.r-note{font-size:14.5px;margin:0 0 10px}
+.r-tip{border-left:3px solid var(--ink);padding-left:11px;font-size:13.5px;margin:0 0 10px}
+.r-ctrl{padding:10px 16px calc(14px + env(safe-area-inset-bottom));display:grid;grid-template-columns:62px 1fr 62px;gap:10px;border-top:2px solid var(--ink)}
+.r-ctrl button{border:2px solid var(--ink);height:62px;display:grid;place-items:center;
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.r-ctrl .prim{background:var(--forza);color:var(--paper);font-family:var(--display);font-size:22px;letter-spacing:.03em}
+.r-ctrl .prim.paused{background:var(--ambra);color:var(--ink)}
+.r-done{text-align:center;padding:30px 10px}
+.r-done .big{font-family:var(--display);text-transform:uppercase;font-size:40px;line-height:.95;margin:14px 0 8px}
+
+@media (min-width:640px){
+  .pad{max-width:620px;margin:0 auto}
+  .grid{grid-template-columns:repeat(7,1fr)}
+  .sheet .panel{max-width:620px;margin:0 auto}
+  .r-main,.r-ctrl,.r-top{max-width:620px;margin-left:auto;margin-right:auto;width:100%}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="#0E1F1C"/></marker></defs></svg>
+
+<header class="top">
+  <span class="brand">Scheda 30</span>
+  <span class="meta">Casa · 0 attrezzi</span>
+</header>
+
+<main>
+  <section class="view on" id="v-oggi"><div class="pad">
+    <div class="daynav">
+      <button id="prevd" aria-label="Giorno precedente">‹</button>
+      <span class="lab" id="daylab">Giorno 01</span>
+      <button id="nextd" aria-label="Giorno successivo">›</button>
+    </div>
+    <div id="oggi"></div>
+  </div></section>
+
+  <section class="view" id="v-mese"><div class="pad">
+    <h2 class="h2">Il mese</h2>
+    <p class="sub">Tocca un giorno per aprirlo</p>
+    <div class="legend">
+      <span><i class="dot" style="background:#1E4D3F"></i>Forza</span>
+      <span><i class="dot" style="background:#2F6079"></i>Cardio</span>
+      <span><i class="dot" style="background:#6E8A78"></i>Recupero</span>
+      <span><i class="dot" style="background:#A9B3A7"></i>Riposo</span>
+      <span><i class="dot" style="background:#E9B44C"></i>Bilancio</span>
+    </div>
+    <div class="grid" id="grid"></div>
+    <p class="prog" id="prog">0 / 30 completati</p>
+    <div id="wknotes"></div>
+  </div></section>
+
+  <section class="view" id="v-atlante"><div class="pad">
+    <h2 class="h2">Atlante</h2>
+    <p class="sub">16 movimenti · A = partenza, B = arrivo</p>
+    <div id="atlas"></div>
+
+    <h2 class="h2" style="margin-top:34px">I numeri del giorno 29</h2>
+    <p class="sub">Al giorno 29 del mese prossimo devono essere più alti</p>
+    <div class="testbox">
+      <label><span class="q">Piegamenti max — livello ___</span><input id="t1" type="number" inputmode="numeric" placeholder="0"></label>
+      <label><span class="q">Plank — secondi</span><input id="t2" type="number" inputmode="numeric" placeholder="0"></label>
+      <label><span class="q">Squat in 2 minuti</span><input id="t3" type="number" inputmode="numeric" placeholder="0"></label>
+    </div>
+
+    <h2 class="h2" style="margin-top:34px">Come cambia il mese 2</h2>
+    <p class="sub">Stessa struttura, quattro modifiche</p>
+    <div class="nx">
+      <div class="item"><div class="k">Difficoltà</div><p>Ogni esercizio sale di un livello: piegamenti dalle ginocchia a completi, squat con 3 secondi di discesa, ponte e polpacci su una gamba sola, plank laterale a gambe distese.</p></div>
+      <div class="item"><div class="k">Volume</div><p>Si riparte dalla settimana 4 di questo mese (4 serie), non da capo. Le pause scendono da 90 a 60 secondi.</p></div>
+      <div class="item"><div class="k">Cardio</div><p>La corsa continua sostituisce l'alternanza: 25 minuti filati a ritmo in cui riesci ancora a parlare. La corda passa a 15 round.</p></div>
+      <div class="item"><div class="k">Nuovi movimenti</div><p>Massimo due: squat bulgaro (piede dietro su una sedia) e pike push-up per le spalle. Sostituiscono, non si aggiungono.</p></div>
+    </div>
+  </div></section>
+</main>
+
+<nav class="tabbar">
+  <button data-tab="oggi" class="on"><span class="ic">▣</span>Oggi</button>
+  <button data-tab="mese"><span class="ic">▦</span>Mese</button>
+  <button data-tab="atlante"><span class="ic">◈</span>Atlante</button>
+</nav>
+
+<div class="sheet" id="sheet" role="dialog" aria-modal="true">
+  <div class="scrim" data-close></div>
+  <div class="panel"><div class="grab"></div>
+    <div class="close"><button data-close>Chiudi ✕</button></div>
+    <div id="sheetbody"></div>
+  </div>
+</div>
+
+<div class="runner" id="runner" role="dialog" aria-modal="true">
+  <div class="r-top">
+    <button class="x" id="rclose">✕ Esci</button>
+    <span class="st mono" id="rstep">1 / 1</span>
+  </div>
+  <div class="r-bar"><i id="rbar"></i></div>
+  <div class="r-main" id="rmain"></div>
+  <div class="r-ctrl">
+    <button id="rprev" aria-label="Passaggio precedente">‹</button>
+    <button id="rprim" class="prim">Avvia</button>
+    <button id="rnext" aria-label="Passaggio successivo">›</button>
+  </div>
+</div>
+
+<script>
+var FIG = {
+squat:'<svg class="fig" viewBox="0 0 240 150" role="img" aria-label="Squat"><line class="ground" x1="14" y1="132" x2="226" y2="132"/><g class="ghost"><circle class="st" cx="52" cy="38" r="9"/><path class="st" d="M52,47 L52,84 M52,55 L50,84 M52,84 L52,108 L52,132 M44,132 L62,132"/></g><path class="arc" d="M78,62 Q114,52 138,88" marker-end="url(#ar)"/><circle class="st" cx="168" cy="58" r="9"/><path class="st" d="M166,67 L148,98 M164,73 L192,80 M148,98 L176,104 L170,132 M160,132 L184,132"/><text class="lbl" x="46" y="20">A</text><text class="lbl" x="186" y="40">B</text></svg>',
+affondo:'<svg class="fig" viewBox="0 0 240 150" role="img" aria-label="Affondo indietro"><line class="ground" x1="14" y1="132" x2="226" y2="132"/><g class="ghost"><circle class="st" cx="52" cy="38" r="9"/><path class="st" d="M52,47 L52,84 M52,55 L50,84 M52,84 L52,108 L52,132 M44,132 L62,132"/></g><path class="arc" d="M80,74 L126,74" marker-end="url(#ar)"/><circle class="st" cx="158" cy="38" r="9"/><path class="st" d="M158,47 L156,86 M158,55 L154,84 M156,86 L162,110 L162,132 M154,132 L172,132 M156,86 L130,112 L120,132"/><line class="ground" x1="122" y1="126" x2="140" y2="126"/><text class="lbl" x="46" y="20">A</text><text class="lbl" x="176" y="24">B</text></svg>',
+ponte:'<svg class="fig" viewBox="0 0 240 150" role="img" aria-label="Ponte glutei"><line class="ground" x1="14" y1="132" x2="226" y2="132"/><g class="ghost"><circle class="st" cx="26" cy="118" r="8"/><path class="st" d="M34,120 L82,120 M40,124 L66,130 M82,120 L98,102 L102,132 M94,132 L112,132"/></g><path class="arc" d="M126,120 L126,96" marker-end="url(#ar)"/><circle class="st" cx="140" cy="118" r="8"/><path class="st" d="M148,120 L196,100 M152,126 L178,132 M196,100 L212,98 L214,132 M206,132 L224,132"/><text class="lbl" x="18" y="100">A</text><text class="lbl" x="150" y="92">B</text></svg>',
+wallsit:'<svg class="fig" viewBox="0 0 240 150" role="img" aria-label="Sedia al muro"><line class="ground" x1="14" y1="132" x2="226" y2="132"/><path class="st" d="M198,16 L198,132"/><path class="thin2" d="M198,30 L210,20 M198,54 L210,44 M198,78 L210,68 M198,102 L210,92 M198,126 L210,116"/><circle class="st" cx="182" cy="48" r="9"/><path class="st" d="M184,57 L186,92 M184,64 L150,76 M186,92 L142,92 L142,132 M132,132 L152,132"/><path class="thin2" d="M152,92 L152,102 L142,102 M186,82 L176,82 L176,92"/><text class="lbl" x="100" y="102">90°</text></svg>',
+polpacci:'<svg class="fig" viewBox="0 0 240 150" role="img" aria-label="Sollevamento polpacci"><line class="ground" x1="14" y1="132" x2="226" y2="132"/><g class="ghost"><circle class="st" cx="60" cy="44" r="9"/><path class="st" d="M60,53 L60,88 M60,60 L58,88 M60,88 L60,132 M52,132 L70,132"/></g><path class="arc" d="M112,96 L112,64" marker-end="url(#ar)"/><circle class="st" cx="164" cy="36" r="9"/><path class="st" d="M164,45 L164,80 M164,52 L162,80 M164,80 L166,120 M166,120 L182,132 M166,120 L154,124"/><text class="lbl" x="52" y="24">A</text><text class="lbl" x="182" y="22">B</text></svg>',
+pushup:'<svg class="fig" viewBox="0 0 240 150" role="img" aria-label="Piegamenti, tre livelli"><line class="ground" x1="8" y1="132" x2="78" y2="132"/><path class="st" d="M14,86 L48,86 M44,86 L44,132"/><circle class="st" cx="28" cy="70" r="7"/><path class="st" d="M34,78 L56,112 L62,132 M34,78 L30,86"/><text class="lbl" x="38" y="26">1</text><line class="ground" x1="84" y1="132" x2="156" y2="132"/><circle class="st" cx="96" cy="100" r="7"/><path class="st" d="M104,106 L128,116 L140,124 M104,106 L102,132 M140,124 L152,116"/><text class="lbl" x="116" y="26">2</text><line class="ground" x1="162" y1="132" x2="234" y2="132"/><circle class="st" cx="172" cy="98" r="7"/><path class="st" d="M180,104 L206,112 L226,120 L230,132 M180,104 L178,132"/><text class="lbl" x="194" y="26">3</text></svg>',
+dip:'<svg class="fig" viewBox="0 0 240 150" role="img" aria-label="Dip su sedia"><line class="ground" x1="14" y1="132" x2="226" y2="132"/><path class="st" d="M22,86 L80,86 M22,86 L22,48 M30,86 L30,132 M74,86 L74,132"/><g class="ghost"><circle class="st" cx="92" cy="88" r="8"/><path class="st" d="M90,100 L100,116 M90,100 L84,102 L78,86"/></g><path class="arc" d="M116,86 L116,108" marker-end="url(#ar)"/><circle class="st" cx="94" cy="68" r="8"/><path class="st" d="M92,80 L100,110 M92,80 L78,86 M100,110 L146,110 L150,132 M142,132 L160,132"/><text class="lbl" x="170" y="72">A</text><text class="lbl" x="170" y="96">B</text></svg>',
+rematore:'<svg class="fig" viewBox="0 0 240 150" role="img" aria-label="Rematore con asciugamano"><line class="ground" x1="14" y1="132" x2="226" y2="132"/><path class="st" d="M42,14 L42,132"/><circle class="thin2" cx="50" cy="74" r="4"/><path class="thin2" d="M54,74 L84,78"/><g class="ghost"><path class="st" d="M96,132 L114,102 L122,84 M122,84 L104,92 L84,78"/><circle class="st" cx="130" cy="76" r="8"/></g><path class="st" d="M96,132 L126,100 L138,84 M138,84 L84,78"/><circle class="st" cx="146" cy="76" r="8"/><path class="arc" d="M182,98 L146,98" marker-end="url(#ar)"/><text class="lbl" x="186" y="74">A</text><text class="lbl" x="112" y="46">B</text></svg>',
+superman:'<svg class="fig" viewBox="0 0 240 150" role="img" aria-label="Superman"><line class="ground" x1="14" y1="132" x2="226" y2="132"/><g class="ghost"><circle class="st" cx="60" cy="120" r="8"/><path class="st" d="M70,124 L140,124 M70,124 L32,126 M140,124 L184,126"/></g><circle class="st" cx="60" cy="106" r="8"/><path class="st" d="M70,112 L140,118 M70,112 L32,98 M140,118 L184,102"/><path class="arc" d="M32,120 L32,104" marker-end="url(#ar)"/><path class="arc" d="M184,120 L184,108" marker-end="url(#ar)"/><text class="lbl" x="104" y="44">B</text><text class="lbl" x="104" y="146">A</text></svg>',
+plank:'<svg class="fig" viewBox="0 0 240 150" role="img" aria-label="Plank"><line class="ground" x1="14" y1="132" x2="226" y2="132"/><circle class="st" cx="60" cy="98" r="8"/><path class="st" d="M74,104 L150,116 L196,126 L200,132 M74,104 L72,132 L48,132"/><path class="arc" d="M58,106 L204,130"/><text class="lbl" x="104" y="88">linea unica</text></svg>',
+planklat:'<svg class="fig" viewBox="0 0 240 150" role="img" aria-label="Plank laterale"><line class="ground" x1="14" y1="132" x2="226" y2="132"/><circle class="st" cx="66" cy="94" r="8"/><path class="st" d="M78,102 L146,116 L198,130 M78,102 L76,132 L52,132 M78,102 L84,64"/><path class="arc" d="M64,102 L202,130"/></svg>',
+deadbug:'<svg class="fig" viewBox="0 0 240 150" role="img" aria-label="Dead bug"><line class="ground" x1="14" y1="132" x2="226" y2="132"/><circle class="st" cx="52" cy="120" r="8"/><path class="st" d="M62,124 L128,124 M66,124 L38,94 M66,124 L84,92 M128,124 L192,128 M128,124 L138,92 L164,96"/><text class="lbl" x="24" y="86">↑</text><text class="lbl" x="196" y="120">→</text></svg>',
+birddog:'<svg class="fig" viewBox="0 0 240 150" role="img" aria-label="Bird dog"><line class="ground" x1="14" y1="132" x2="226" y2="132"/><circle class="st" cx="88" cy="96" r="8"/><path class="st" d="M78,104 L142,104 M78,104 L72,132 M142,104 L150,132 L170,132 M78,104 L38,92 M142,104 L196,92"/><path class="arc" d="M36,90 L198,90"/></svg>',
+mountain:'<svg class="fig" viewBox="0 0 240 150" role="img" aria-label="Mountain climber"><line class="ground" x1="14" y1="132" x2="226" y2="132"/><circle class="st" cx="62" cy="96" r="8"/><path class="st" d="M76,102 L146,114 M76,102 L72,132 L50,132 M146,114 L198,130 L202,132 M146,114 L112,120 L116,132"/><path class="arc" d="M120,90 Q152,80 184,96" marker-end="url(#ar)"/></svg>',
+jack:'<svg class="fig" viewBox="0 0 240 150" role="img" aria-label="Jumping jack"><line class="ground" x1="14" y1="132" x2="226" y2="132"/><g class="ghost"><circle class="st" cx="64" cy="34" r="9"/><path class="st" d="M64,43 L64,86 M64,50 L50,84 M64,50 L78,84 M64,86 L58,132 M64,86 L70,132"/></g><path class="arc" d="M96,70 L124,70" marker-end="url(#ar)"/><circle class="st" cx="166" cy="34" r="9"/><path class="st" d="M166,43 L166,86 M166,50 L136,24 M166,50 L196,24 M166,86 L142,132 M166,86 L190,132"/><text class="lbl" x="56" y="16">A</text><text class="lbl" x="204" y="16">B</text></svg>',
+corda:'<svg class="fig" viewBox="0 0 240 150" role="img" aria-label="Salto della corda"><line class="ground" x1="14" y1="132" x2="226" y2="132"/><circle class="st" cx="120" cy="36" r="9"/><path class="st" d="M120,45 L120,86 M120,54 L100,74 M120,54 L140,74 M120,86 L112,116 M120,86 L128,116"/><path class="thin2" d="M100,74 C58,128 182,128 140,74"/><path class="thin2" stroke-dasharray="4 5" d="M100,74 C112,50 128,50 140,74"/><text class="lbl" x="172" y="118">aria</text></svg>',
+camminata:'<svg class="fig" viewBox="0 0 240 150" role="img" aria-label="Camminata veloce"><line class="ground" x1="14" y1="132" x2="226" y2="132"/><circle class="st" cx="112" cy="34" r="9"/><path class="st" d="M112,43 L114,84 M112,52 L92,72 M112,52 L136,70 M114,84 L96,110 L88,132 M114,84 L138,106 L146,132"/><path class="arc" d="M170,60 L200,60" marker-end="url(#ar)"/></svg>'
+};
+
+var ATL = [
+ ['squat','Squat',['Piedi larghi come le spalle, punte leggermente in fuori.','Spingi il sedere indietro come per sederti su una sedia bassa, braccia avanti a bilanciare.','Scendi finché le cosce sono parallele al pavimento, poi risali spingendo con i talloni.'],'Se è troppo','Metti una sedia dietro: scendi, sfiori il sedile, risali senza sederti davvero.'],
+ ['affondo','Affondo indietro',['In piedi, mani sui fianchi. Fai un passo lungo all&rsquo;indietro con una gamba.','Piega entrambe le ginocchia finché quello dietro sfiora il pavimento. Busto dritto.','Spingi con la gamba davanti per tornare in piedi. Alterna le gambe.'],'Se traballi','Appoggia una mano al muro o allo schienale di una sedia. Non è barare.'],
+ ['ponte','Ponte per i glutei',['Sdraiato sulla schiena, ginocchia piegate, piedi a terra vicini al sedere.','Spingi con i talloni e alza il bacino finché ginocchia, bacino e spalle sono in linea.','Stringi i glutei per un secondo in alto, poi scendi lentamente senza appoggiare del tutto.'],'Errore tipico','Inarcare la schiena invece di stringere i glutei. Se senti la zona lombare, sei salito troppo.'],
+ ['wallsit','Sedia al muro',['Schiena appoggiata al muro, scendi scivolando finché le cosce sono parallele al pavimento.','Ginocchia sopra le caviglie, non oltre le punte dei piedi. Braccia libere davanti.','Resta fermo per il tempo previsto respirando normalmente.'],'Se brucia troppo','Scendi meno: anche a 120° allena. Meglio 40 secondi alti che 10 corretti e poi crollo.'],
+ ['polpacci','Sollevamento polpacci',['In piedi, piedi paralleli, dita di una mano appoggiate al muro per l&rsquo;equilibrio.','Sali il più in alto possibile sulle punte, fermati un secondo.','Scendi lentamente contando fino a tre. Il lento è tutto l&rsquo;esercizio.'],'Versione dura','Su una gamba sola, o con le punte su un libro spesso per scendere sotto il livello del pavimento.'],
+ ['pushup','Piegamenti',['<b>Livello 1:</b> mani sul bordo di un tavolo, corpo in diagonale, piedi indietro. Scendi col petto verso il tavolo.','<b>Livello 2:</b> a terra, appoggiato sulle ginocchia. Corpo dritto dalla testa alle ginocchia.','<b>Livello 3:</b> completo, dalla testa ai talloni in linea. Gomiti a 45° dal corpo, non aperti a T.'],'Regola di passaggio','Sali di livello solo quando fai 3 serie da 12 pulite. Il sedere non deve mai salire per primo.'],
+ ['dip','Dip su sedia',['Siediti sul bordo di una sedia stabile, mani ai lati dei fianchi, dita in avanti.','Sposta il sedere in avanti fuori dalla sedia, gambe piegate e piedi a terra.','Piega i gomiti indietro e scendi fino all&rsquo;angolo retto, poi spingi per risalire.'],'Attenzione','La sedia deve essere contro il muro. E resta vicino: se il sedere si allontana troppo, il carico va sulle spalle.'],
+ ['rematore','Rematore con asciugamano',['Passa un asciugamano attorno alla maniglia di una porta chiusa e bloccata, un capo per mano.','Piedi vicini alla porta, braccia tese, lasciati andare indietro col corpo dritto come un&rsquo;asse.','Tira portando i gomiti indietro e stringendo le scapole, fino a sfiorare la porta col petto.'],'Perché conta','È l&rsquo;unico movimento di tirata della scheda: bilancia i piegamenti e raddrizza le spalle da scrivania.'],
+ ['superman','Superman',['A pancia in giù, braccia distese oltre la testa, gambe dritte.','Alza contemporaneamente braccia, petto e gambe di pochi centimetri. Sguardo a terra.','Tieni un secondo in alto, poi scendi lentamente. È un movimento corto: non forzare.'],'Se dà fastidio alla schiena','Alza solo braccio destro e gamba sinistra insieme, poi cambia. Stesso effetto, metà carico.'],
+ ['plank','Plank',['Appoggiati su avambracci e punte dei piedi, gomiti sotto le spalle.','Testa, schiena e talloni in una linea sola: sedere né alto né sprofondato.','Stringi glutei e pancia come se aspettassi un pugno. Respira, non trattenere il fiato.'],'Regola del tempo','Meglio 20 secondi con la linea giusta che 60 col sedere per aria. Quando cede la forma, hai finito.'],
+ ['planklat','Plank laterale',['Su un fianco, appoggiato sull&rsquo;avambraccio, gomito sotto la spalla, gambe distese e sovrapposte.','Alza il bacino: dalla testa ai piedi una linea diritta. Braccio libero verso il soffitto.','Tieni, poi cambia lato. Stesso tempo a destra e a sinistra.'],'Se è troppo','Piega le ginocchia e appoggiale a terra: accorci la leva e diventa fattibile.'],
+ ['deadbug','Dead bug',['Sulla schiena, braccia tese verso il soffitto, ginocchia piegate a 90° in aria.','Allunga insieme il braccio destro dietro la testa e la gamba sinistra in avanti, senza toccare terra.','Torna al centro e cambia lato. La lombare resta incollata al pavimento.'],'Il controllo','Se la schiena si stacca da terra, allunga meno la gamba. È lì che sta il lavoro degli addominali profondi.'],
+ ['birddog','Bird dog',['A quattro zampe: mani sotto le spalle, ginocchia sotto i fianchi, schiena piatta come un tavolo.','Allunga il braccio destro avanti e la gamba sinistra indietro, fino all&rsquo;altezza delle spalle.','Fermati due secondi, torna, cambia lato. Il bacino non deve ruotare.'],'Prova pratica','Immagina un bicchiere d&rsquo;acqua sulla schiena. Se si rovescia, stai ruotando invece di allungare.'],
+ ['mountain','Mountain climber',['Partenza in posizione di piegamento, braccia tese, corpo in linea.','Porta un ginocchio verso il petto, poi riportalo indietro e cambia gamba.','Alterna a ritmo costante. Il bacino resta basso e fermo.'],'Ritmo','Non è una gara di velocità. Ritmo controllato per tutti i secondi previsti, senza rimbalzare col sedere.'],
+ ['jack','Jumping jack',['In piedi, piedi uniti, braccia lungo i fianchi.','Con un saltello apri le gambe e porta le braccia sopra la testa.','Torna alla partenza con un secondo saltello. Atterra morbido, sulle punte.'],'Versione silenziosa','Se hai vicini sotto: stesso movimento delle braccia, ma sposta un piede di lato alla volta senza saltare.'],
+ ['corda','Corda',['Gomiti vicini al corpo: girano i polsi, non le braccia.','Saltelli bassi, due o tre centimetri, sempre sull&rsquo;avampiede. Ginocchia morbide.','Un salto per giro di corda. Se ti impappini, riparti: fa parte dell&rsquo;esercizio.'],'Senza corda','Fai lo stesso movimento a vuoto (saltelli sul posto e polsi che girano). L&rsquo;effetto sul fiato è quasi identico.']
+];
+var NAME={}, FIGN={};
+ATL.forEach(function(a,k){ NAME[a[0]]=a[1]; FIGN[a[0]]=k+1; });
+NAME.camminata='Camminata';
+
+var RX={
+ squat:{s:[2,3,3,4],r:[10,12,15,15],p:[75,75,75,60]},
+ pushup:{s:[2,3,3,4],r:[6,8,8,8],p:[75,75,75,60],lv:[1,1,2,2]},
+ affondo:{s:[2,3,3,4],r:[8,10,12,12],side:1,p:[75,75,75,60]},
+ dip:{s:[2,3,3,4],r:[8,10,12,12],p:[60,60,60,45]},
+ plank:{s:[2,3,3,4],t:[20,30,40,45],p:[45,45,45,40]},
+ rematore:{s:[2,3,3,4],r:[10,12,12,12],p:[75,75,75,60]},
+ ponte:{s:[2,3,3,4],r:[12,15,15,15],p:[60,60,60,45]},
+ superman:{s:[2,3,3,4],r:[10,12,12,12],p:[45,45,45,40]},
+ wallsit:{s:[2,3,3,4],t:[20,30,40,45],p:[60,60,60,45]},
+ deadbug:{s:[2,3,3,4],r:[8,10,10,10],side:1,p:[45,45,45,40]},
+ birddog:{s:[2,3,3,4],r:[8,10,10,10],side:1,p:[45,45,45,40]},
+ planklat:{s:[2,2,3,3],t:[15,20,25,30],side:1,p:[40,40,40,35]},
+ mountain:{s:[2,3,3,4],t:[20,25,30,30],p:[45,45,45,40]},
+ polpacci:{s:[2,3,3,4],r:[15,15,20,20],p:[45,45,45,40]},
+ jack:{s:[2,3,3,3],t:[30,30,40,45],p:[40,40,40,35]}
+};
+var RISC='Marcia sul posto · cerchi con le braccia 20+20 · 10 squat lenti a vuoto · 10 ponti · 10 rotazioni del busto.';
+var DEF='Cosce davanti e dietro · polpacci · petto contro lo stipite · schiena a gatto. 30" per posizione.';
+var MOB='Gatto-mucca 10 · rotazioni anche 10 per lato · apertura petto allo stipite 3 × 20" · flessori dell&rsquo;anca 30" per lato.';
+var CIR=['squat','pushup','affondo','rematore','planklat','mountain'];
+var CW=[30,35,40,45], CG=[3,3,4,4], CP=[90,90,75,60];
+var WKN=[
+ ['Settimana 01 · Imparare i movimenti','2 serie di tutto. Questa settimana l&rsquo;obiettivo è la forma, non la fatica.'],
+ ['Settimana 02 · Aggiungere volume','Si passa a 3 serie. Entra la corsa alternata alla camminata.'],
+ ['Settimana 03 · Alzare l&rsquo;asticella','Ripetizioni più alte e varianti più dure. Entra la corda.'],
+ ['Settimana 04 · Consolidare','4 serie e pause più corte. Poi si misura.']
+];
+function qs(id,w){ var r=RX[id]; return r.s[w]+' × '+(r.t? r.t[w]+'"' : r.r[w])+(r.side?' per lato':''); }
+function wi(n){ return Math.min(Math.ceil(n/7),4)-1; }
+function map(a,w){ return a.map(function(i){ return {id:i,q:qs(i,w)}; }); }
+
+function day(n){
+ var w=wi(n), d=((n-1)%7)+1;
+ if(n===29) return {n:29,type:'bilancio',ttl:'Test — misura i numeri',dur:'30 min',blocks:[
+   {h:'Riscaldamento',p:RISC},
+   {h:'Le tre prove',list:[{id:'pushup',q:'max ripetizioni'},{id:'plank',q:'max secondi'},{id:'squat',q:'quanti in 2 min'}]},
+   {h:'Poi',p:'Scrivi i tre numeri in Atlante, sezione "I numeri del giorno 29". Sono il metro del mese prossimo.'}]};
+ if(n===30) return {n:30,type:'bilancio',ttl:'Chiusura e mese 2',dur:'45 min',blocks:[
+   {h:'Movimento',p:'Camminata lunga 40&rsquo; a passo sostenuto, all&rsquo;aperto.'},
+   {h:'Mobilità',p:MOB},
+   {h:'Scrivania',p:'Rileggi "Come cambia il mese 2" in Atlante, scegli i due movimenti nuovi, poi riparti dal giorno 1.'}]};
+ if(d===1) return {n:n,type:'forza',ttl:'Forza A — gambe e spinta',dur:'35–40 min',blocks:[
+   {h:'Riscaldamento 5&rsquo;',p:RISC},
+   {h:'Lavoro',list:map(['squat','pushup','affondo','dip','plank'],w)},
+   {h:'Defaticamento 4&rsquo;',p:DEF}]};
+ if(d===2) return {n:n,type:'cardio',ttl:'Cardio serale e core',dur:'35 min',blocks:[
+   {h:'Fuori casa',p:['Camminata veloce 25&rsquo; — passo in cui parli a fatica.','Camminata veloce 28&rsquo; con 6 tratti da 1&rsquo; più spinti.','Corda: 10 round da 30" con 45" di pausa.','Corda: 12 round da 40" con 40" di pausa.'][w]},
+   {h:'Core a casa',list:map(w<2?['plank','deadbug','birddog']:['plank','planklat','birddog'],w)},
+   {h:'Defaticamento 4&rsquo;',p:DEF}]};
+ if(d===3) return {n:n,type:'forza',ttl:'Forza B — tirata e catena posteriore',dur:'35–40 min',blocks:[
+   {h:'Riscaldamento 5&rsquo;',p:RISC},
+   {h:'Lavoro',list:map(['rematore','ponte','superman','wallsit','deadbug'],w)},
+   {h:'Defaticamento 4&rsquo;',p:DEF}]};
+ if(d===4) return {n:n,type:'recupero',ttl:'Recupero attivo',dur:'30 min',blocks:[
+   {h:'Mobilità 10&rsquo;',p:MOB},
+   {h:'Camminata 20&rsquo;',p:'Passo comodo, all&rsquo;aperto se puoi. Si deve poter chiacchierare.'},
+   {h:'Nota',p:'Questo giorno serve. Saltarlo per "fare di più" è la scelta che ti costa la settimana 3.'}]};
+ if(d===5) return {n:n,type:'forza',ttl:'Forza C — circuito total body',dur:'35–45 min',blocks:[
+   {h:'Riscaldamento 5&rsquo;',p:RISC},
+   {h:'Circuito a tempo · '+CG[w]+' giri',list:CIR.map(function(i){return {id:i,q:CW[w]+'"'};})},
+   {h:'Ritmo',p:CW[w]+'" di lavoro, 20" per cambiare posizione, '+CP[w]+'" di pausa tra un giro e l&rsquo;altro.'},
+   {h:'Defaticamento 4&rsquo;',p:DEF}]};
+ if(d===6) return {n:n,type:'cardio',ttl:'Intervalli e polpacci',dur:'35–40 min',blocks:[
+   {h:'Fuori casa',p:['5&rsquo; camminata · 8 × (30" passo rapido / 90" normale) · 5&rsquo; camminata','5&rsquo; camminata · 8 × (1&rsquo; corsa lenta / 90" camminata) · 5&rsquo; camminata','5&rsquo; camminata · 8 × (90" corsa lenta / 90" camminata) · 5&rsquo; camminata','5&rsquo; camminata · 20&rsquo; corsa lenta continua · 5&rsquo; camminata'][w]},
+   {h:'A casa',list:map(['polpacci','jack','plank'],w)},
+   {h:'Defaticamento 4&rsquo;',p:DEF}]};
+ return {n:n,type:'riposo',ttl:'Riposo',dur:'—',blocks:[
+   {h:'Oggi',p:'Niente allenamento. Se hai voglia di muoverti: una passeggiata, non un allenamento travestito da passeggiata.'},
+   {h:'Il vero lavoro di oggi',p:'Dormire. Il muscolo cresce di notte, non durante le serie.'}]};
+}
+var DAYS=[]; for(var z=1;z<=30;z++) DAYS.push(day(z));
+var KEY={forza:'Forza',cardio:'Cardio',recupero:'Recupero',riposo:'Riposo',bilancio:'Bilancio'};
+
+function Wk(ex,sec,label,sub){ return {k:'work',ex:ex,sec:sec||0,label:label,sub:sub}; }
+function Rs(sec,nx){ return {k:'rest',sec:sec,next:nx}; }
+function In(t,sec,note){ return {k:'info',label:t,sec:sec||0,note:note}; }
+
+function straight(id,w,out){
+ var r=RX[id],n=r.s[w],lv=r.lv?' · livello '+r.lv[w]:'';
+ for(var s=1;s<=n;s++){
+  if(r.t&&r.side){
+   out.push(Wk(id,r.t[w],NAME[id],'Serie '+s+'/'+n+' · lato destro'));
+   out.push(Rs(10,'Lato sinistro'));
+   out.push(Wk(id,r.t[w],NAME[id],'Serie '+s+'/'+n+' · lato sinistro'));
+  } else if(r.t){
+   out.push(Wk(id,r.t[w],NAME[id],'Serie '+s+'/'+n+lv));
+  } else {
+   out.push(Wk(id,0,NAME[id],'Serie '+s+'/'+n+' · '+r.r[w]+' ripetizioni'+(r.side?' per lato':'')+lv));
+  }
+  if(s<n) out.push(Rs(r.p[w],'Serie '+(s+1)+' di '+NAME[id]));
+ }
+}
+function chain(list,w,out){
+ list.forEach(function(id,k){ straight(id,w,out); if(k<list.length-1) out.push(Rs(RX[id].p[w],NAME[list[k+1]])); });
+}
+function steps(n){
+ var w=wi(n),d=((n-1)%7)+1,o=[],g,k;
+ if(n===29){
+  o.push(In('Riscaldamento',300,RISC));
+  o.push({k:'up',ex:'pushup',label:'Piegamenti max',sub:'Conta le ripetizioni, fermati quando la forma cede'});
+  o.push(Rs(120,'Plank massimo'));
+  o.push({k:'up',ex:'plank',label:'Plank massimo',sub:'Ferma il cronometro quando il sedere si muove'});
+  o.push(Rs(120,'Squat in 2 minuti'));
+  o.push(Wk('squat',120,'Squat in 2 minuti','Conta quanti ne fai, ritmo controllato'));
+  o.push(In('Scrivi i numeri',0,'Vai in Atlante e segna i tre risultati.'));
+  return o;
+ }
+ if(n===30){
+  o.push(Wk('camminata',2400,'Camminata lunga','40 minuti a passo sostenuto'));
+  o.push(In('Mobilità',600,MOB));
+  o.push(In('Mese 2',0,'Rileggi "Come cambia il mese 2" e scegli i due movimenti nuovi.'));
+  return o;
+ }
+ if(d===7){ o.push(In('Riposo',0,'Niente da cronometrare. Il lavoro di oggi è dormire.')); return o; }
+ if(d===4){
+  o.push(In('Mobilità',600,MOB));
+  o.push(Wk('camminata',1200,'Camminata facile','20 minuti · passo da chiacchiera'));
+  return o;
+ }
+ if(d===2){
+  if(w<2) o.push(Wk('camminata',w===0?1500:1680,'Camminata veloce',w===0?'25 minuti · passo in cui parli a fatica':'28 minuti · 6 tratti da 1&rsquo; più spinti'));
+  else {
+   var rn=(w===2?10:12), on=(w===2?30:40), off=(w===2?45:40);
+   for(g=1;g<=rn;g++){ o.push(Wk('corda',on,'Corda','Round '+g+'/'+rn)); if(g<rn) o.push(Rs(off,'Round '+(g+1))); }
+  }
+  o.push(Rs(90,'Core a casa'));
+  chain(w<2?['plank','deadbug','birddog']:['plank','planklat','birddog'],w,o);
+  o.push(In('Defaticamento',240,DEF));
+  return o;
+ }
+ if(d===6){
+  o.push(Wk('camminata',300,'Camminata','Riscaldamento'));
+  if(w<3){
+   var lab=['Passo rapido','Corsa lenta','Corsa lenta'][w], sec=[30,60,90][w];
+   for(g=1;g<=8;g++){ o.push(Wk('camminata',sec,lab,'Round '+g+'/8')); o.push(Rs(90,g<8?'Round '+(g+1):'Defaticamento')); }
+  } else {
+   o.push(Wk('camminata',1200,'Corsa lenta continua','20 minuti · ritmo in cui riesci a parlare'));
+  }
+  o.push(Wk('camminata',300,'Camminata','Defaticamento'));
+  o.push(Rs(60,'A casa'));
+  chain(['polpacci','jack','plank'],w,o);
+  o.push(In('Defaticamento',240,DEF));
+  return o;
+ }
+ o.push(In('Riscaldamento',300,RISC));
+ if(d===5){
+  for(g=1;g<=CG[w];g++){
+   for(k=0;k<CIR.length;k++){
+    o.push(Wk(CIR[k],CW[w],NAME[CIR[k]],'Giro '+g+'/'+CG[w]));
+    if(k<CIR.length-1) o.push(Rs(20,NAME[CIR[k+1]]));
+   }
+   if(g<CG[w]) o.push(Rs(CP[w],'Giro '+(g+1)));
+  }
+ } else {
+  chain(d===1?['squat','pushup','affondo','dip','plank']:['rematore','ponte','superman','wallsit','deadbug'],w,o);
+ }
+ o.push(In('Defaticamento',240,DEF));
+ return o;
+}
+
+var mem={done:[],test:{}}, cur=1;
+async function save(){ try{ await window.storage.set('scheda30:v2',JSON.stringify(mem)); }catch(e){} }
+async function load(){
+ try{ var r=await window.storage.get('scheda30:v2'); if(r&&r.value) mem=JSON.parse(r.value); }catch(e){}
+ if(!mem.done) mem.done=[]; if(!mem.test) mem.test={};
+ cur=30; for(var i=1;i<=30;i++){ if(mem.done.indexOf(i)===-1){ cur=i; break; } }
+ renderAll();
+}
+
+var $=function(s){ return document.querySelector(s); };
+function fmt(s){ var m=Math.floor(s/60),x=s%60; return m+':'+(x<10?'0':'')+x; }
+
+function renderOggi(){
+ var d=DAYS[cur-1];
+ $('#daylab').textContent='Giorno '+String(cur).padStart(2,'0')+' · sett. '+(wi(cur)+1);
+ var h='<div class="hero t-'+d.type+'"><div class="hero-top"><span class="n">'+String(d.n).padStart(2,'0')+'</span><span><span class="tt">'+d.ttl+'</span><br><span class="du">'+KEY[d.type]+' · '+d.dur+'</span></span></div><div class="hero-body">';
+ d.blocks.forEach(function(b){
+  h+='<div class="blk"><p class="blk-h">'+b.h+'</p>';
+  if(b.list) b.list.forEach(function(e){ h+='<div class="ex"><button class="exlink" data-ex="'+e.id+'">'+NAME[e.id]+'</button><span class="qty">'+e.q+'</span></div>'; });
+  else h+='<p class="plain">'+b.p+'</p>';
+  h+='</div>';
+ });
+ h+='</div></div>';
+ h+='<label class="donebar"><input type="checkbox" id="dchk"'+(mem.done.indexOf(cur)>-1?' checked':'')+'> Giorno completato</label>';
+ h+= d.type==='riposo' ? '<button class="go ghost" disabled>Oggi si riposa</button>' : '<button class="go" id="start">▶ Avvia sessione</button>';
+ $('#oggi').innerHTML=h;
+ var c=$('#dchk'); if(c) c.addEventListener('change',function(){ toggleDone(cur,c.checked); });
+ var s=$('#start'); if(s) s.addEventListener('click',function(){ openRunner(cur); });
+}
+function renderGrid(){
+ var g=$('#grid'); g.innerHTML='';
+ DAYS.forEach(function(d){
+  var b=document.createElement('button');
+  b.className='cell c-'+d.type+(mem.done.indexOf(d.n)>-1?' done':'')+(d.n===cur?' today':'');
+  b.innerHTML='<span class="n mono">'+String(d.n).padStart(2,'0')+'</span><span class="k">'+KEY[d.type]+'</span>';
+  b.setAttribute('aria-label','Giorno '+d.n+', '+d.ttl);
+  b.onclick=function(){ cur=d.n; renderAll(); tab('oggi'); window.scrollTo(0,0); };
+  g.appendChild(b);
+ });
+ $('#prog').textContent=mem.done.length+' / 30 completati';
+ $('#wknotes').innerHTML=WKN.map(function(x){ return '<div class="wknote"><div class="k">'+x[0]+'</div><p>'+x[1]+'</p></div>'; }).join('');
+}
+function card(a){
+ return '<div class="afig">'+FIG[a[0]]+'</div><div class="abody"><div class="fign">Fig. '+String(FIGN[a[0]]).padStart(2,'0')+'</div><h3>'+a[1]+'</h3><ol><li>'+a[2].join('</li><li>')+'</li></ol><p class="warn"><b>'+a[3]+'</b>'+a[4]+'</p></div>';
+}
+function renderAtlas(){
+ $('#atlas').innerHTML=ATL.map(function(a){ return '<article class="acard" id="ex-'+a[0]+'">'+card(a)+'</article>'; }).join('');
+ ['t1','t2','t3'].forEach(function(k){ if(mem.test[k]) $('#'+k).value=mem.test[k]; });
+}
+function renderAll(){ renderOggi(); renderGrid(); renderAtlas(); }
+function toggleDone(n,on){
+ var k=mem.done.indexOf(n);
+ if(on&&k===-1) mem.done.push(n);
+ if(!on&&k>-1) mem.done.splice(k,1);
+ save(); renderGrid();
+}
+
+function tab(name){
+ document.querySelectorAll('.view').forEach(function(v){ v.classList.toggle('on', v.id==='v-'+name); });
+ document.querySelectorAll('.tabbar button').forEach(function(b){ b.classList.toggle('on', b.dataset.tab===name); });
+}
+document.querySelectorAll('.tabbar button').forEach(function(b){ b.onclick=function(){ tab(b.dataset.tab); window.scrollTo(0,0); }; });
+$('#prevd').onclick=function(){ if(cur>1){ cur--; renderAll(); } };
+$('#nextd').onclick=function(){ if(cur<30){ cur++; renderAll(); } };
+
+document.addEventListener('click',function(e){
+ var t=e.target.closest('[data-ex]');
+ if(t){ openSheet(t.getAttribute('data-ex')); return; }
+ if(e.target.closest('[data-close]')) $('#sheet').classList.remove('on');
+});
+function openSheet(id){
+ var a=ATL.filter(function(x){ return x[0]===id; })[0];
+ if(!a) return;
+ $('#sheetbody').innerHTML=card(a);
+ $('#sheet').classList.add('on');
+}
+document.addEventListener('change',function(e){
+ if(e.target.matches('#t1,#t2,#t3')){ mem.test[e.target.id]=e.target.value; save(); }
+});
+
+var AC=null, lock=null;
+function unlock(){ try{ if(!AC) AC=new (window.AudioContext||window.webkitAudioContext)(); if(AC.state==='suspended') AC.resume(); }catch(e){} }
+function beep(f,d,v){
+ try{
+  if(!AC) return;
+  var o=AC.createOscillator(), g=AC.createGain();
+  o.type='sine'; o.frequency.value=f; o.connect(g); g.connect(AC.destination);
+  var t=AC.currentTime; g.gain.setValueAtTime(0,t);
+  g.gain.linearRampToValueAtTime(v||.35,t+.01); g.gain.linearRampToValueAtTime(0,t+d);
+  o.start(t); o.stop(t+d+.03);
+ }catch(e){}
+}
+async function wake(on){
+ try{
+  if(on&&'wakeLock' in navigator){ lock=await navigator.wakeLock.request('screen'); }
+  else if(lock){ lock.release(); lock=null; }
+ }catch(e){}
+}
+document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible'&&S.on) wake(true); });
+
+var S={on:false,list:[],i:0,t:0,run:false,tick:null,day:null};
+function openRunner(n){
+ unlock();
+ S.list=steps(n); S.i=0; S.day=n; S.on=true;
+ $('#rprim').onclick=primClick;
+ $('#runner').classList.add('on');
+ document.body.style.overflow='hidden';
+ wake(true); setStep(0,false);
+}
+function closeRunner(){
+ S.on=false; S.run=false; clearInterval(S.tick);
+ $('#runner').classList.remove('on'); document.body.style.overflow=''; wake(false);
+}
+$('#rclose').onclick=closeRunner;
+
+function setStep(k,auto){
+ clearInterval(S.tick); S.run=false;
+ if(k>=S.list.length){ finish(); return; }
+ S.i=k;
+ var s=S.list[k];
+ S.t = s.k==='up' ? 0 : (s.sec||0);
+ draw();
+ if(auto&&(s.k==='rest'||s.sec>0)) play(true);
+}
+function draw(){
+ var s=S.list[S.i], m=$('#rmain');
+ var kind = s.k==='rest'?'Pausa' : s.k==='info'?'Blocco' : s.k==='up'?'Cronometro' : 'Lavoro';
+ var title = s.k==='rest' ? 'Pausa' : (s.label||NAME[s.ex]||'');
+ var sub = s.k==='rest' ? (s.next?'Poi: '+s.next:'') : (s.sub||'');
+ var h='<div class="r-kind">'+kind+'</div><div class="r-title">'+title+'</div>';
+ if(sub) h+='<p class="r-sub">'+sub+'</p>';
+ h+='<div class="r-clock mono" id="rclock">'+(s.k==='up'?'0:00':(S.t>0?fmt(S.t):'—'))+'</div>';
+ if(s.ex&&FIG[s.ex]&&s.k!=='rest') h+='<div class="r-plate">'+FIG[s.ex]+'</div>';
+ if(s.note) h+='<p class="r-note">'+s.note+'</p>';
+ if(s.ex&&NAME[s.ex]&&ATL.filter(function(x){return x[0]===s.ex;}).length)
+   h+='<p class="r-tip"><button data-ex="'+s.ex+'" style="border-bottom:2px solid var(--ambra)">Come si fa ↗</button></p>';
+ m.innerHTML=h;
+ m.classList.toggle('r-rest', s.k==='rest');
+ $('#rstep').textContent=(S.i+1)+' / '+S.list.length;
+ $('#rbar').style.width=Math.round((S.i/S.list.length)*100)+'%';
+ m.scrollTop=0;
+ paintPrim();
+}
+function paintPrim(){
+ var s=S.list[S.i], b=$('#rprim');
+ if(s.k==='up'){ b.textContent=S.run?'Stop':'Avvia'; }
+ else if(!s.sec){ b.textContent='Fatto ✓'; }
+ else { b.textContent=S.run?'Pausa':'Avvia'; }
+ b.classList.toggle('paused', S.run);
+}
+function play(on){
+ unlock();
+ S.run=on; clearInterval(S.tick); paintPrim();
+ if(!on) return;
+ S.tick=setInterval(function(){
+  var s=S.list[S.i], c=$('#rclock');
+  if(!c){ clearInterval(S.tick); return; }
+  if(s.k==='up'){ S.t++; c.textContent=fmt(S.t); return; }
+  S.t--;
+  if(S.t<=3&&S.t>0) beep(760,.09);
+  c.textContent=fmt(Math.max(S.t,0));
+  c.classList.toggle('pulse', S.t<=3);
+  if(S.t<=0){ beep(430,.5,.4); clearInterval(S.tick); setStep(S.i+1,true); }
+ },1000);
+}
+function primClick(){
+ var s=S.list[S.i];
+ if(s.k!=='up'&&!s.sec){ setStep(S.i+1,true); return; }
+ play(!S.run);
+}
+$('#rprim').onclick=primClick;
+$('#rnext').onclick=function(){ setStep(S.i+1,false); };
+$('#rprev').onclick=function(){ if(S.i>0) setStep(S.i-1,false); };
+function finish(){
+ clearInterval(S.tick); S.run=false;
+ beep(620,.25); setTimeout(function(){ beep(880,.4); },260);
+ $('#rmain').classList.remove('r-rest');
+ $('#rmain').innerHTML='<div class="r-done"><div class="r-kind">Sessione chiusa</div><div class="big">Giorno '+String(S.day).padStart(2,'0')+' fatto</div><p class="r-note">Segnalo e vai. Domani è già scritto.</p></div>';
+ $('#rbar').style.width='100%'; $('#rstep').textContent='fine';
+ var b=$('#rprim'); b.textContent='Segna e chiudi'; b.classList.remove('paused');
+ b.onclick=function(){
+  toggleDone(S.day,true);
+  if(S.day<30) cur=S.day+1;
+  renderAll(); closeRunner(); window.scrollTo(0,0);
+ };
+}
+document.addEventListener('keydown',function(e){
+ if(!S.on) return;
+ if(e.key===' '){ e.preventDefault(); $('#rprim').click(); }
+ if(e.key==='Escape') closeRunner();
+});
+
+load();
+</script>
+</body>
+</html>
